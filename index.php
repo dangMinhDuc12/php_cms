@@ -2,6 +2,19 @@
 
 include "./includes/db.php";
 
+//mở thẻ php chèn đoạn mã HTML giống như ejs. Ví dụ
+/*
+ * <?php
+ *  for($i = 0; i < 10; i++) {
+ *
+ *  ?>
+ *      <h1><?php echo $i;?></h1>
+ * <?php
+ * }
+ * ?>
+ *
+ * */
+
 ?>
 
 
@@ -81,59 +94,40 @@ include "./includes/db.php";
 
             <!-- Blog Entries Column -->
             <div class="col-md-8">
+              <?php
+                $posts = mysqli_query($connection, "SELECT * FROM posts");
+                while($row = mysqli_fetch_assoc($posts)) {
+                    $postsTitle = $row['title'];
+                    $postsAuthor = $row['author'];
+                    $postsDate = $row['date'];
+                    $postsContent = $row['content'];
+                    $postsTags = $row['tags'];
+                    $image = $row['image'];
+                    ?>
+                    <h1 class="page-header">
+                        Page Heading
+                        <small>Secondary Text</small>
+                    </h1>
 
-                <h1 class="page-header">
-                    Page Heading
-                    <small>Secondary Text</small>
-                </h1>
+                    <!-- First Blog Post -->
+                    <h2>
+                        <a href="#"><?php echo  $postsTitle; ?></a>
+                    </h2>
+                    <p class="lead">
+                        by <a href="index.php"><?php echo $postsAuthor?></a>
+                    </p>
+                    <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $postsDate?></p>
+                    <hr>
+                    <img class="img-responsive" src="<?php echo $image   ?>" alt="">
+                    <hr>
+                    <p><?php echo $postsContent?></p>
+                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
-                <!-- First Blog Post -->
-                <h2>
-                    <a href="#">Blog Post Title</a>
-                </h2>
-                <p class="lead">
-                    by <a href="index.php">Start Bootstrap</a>
-                </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
-                <hr>
-                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                <hr>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore, veritatis, tempora, necessitatibus inventore nisi quam quia repellat ut tempore laborum possimus eum dicta id animi corrupti debitis ipsum officiis rerum.</p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <hr>
+                <?php
 
-                <hr>
-
-                <!-- Second Blog Post -->
-                <h2>
-                    <a href="#">Blog Post Title</a>
-                </h2>
-                <p class="lead">
-                    by <a href="index.php">Start Bootstrap</a>
-                </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>
-                <hr>
-                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                <hr>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, quasi, fugiat, asperiores harum voluptatum tenetur a possimus nesciunt quod accusamus saepe tempora ipsam distinctio minima dolorum perferendis labore impedit voluptates!</p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                <hr>
-
-                <!-- Third Blog Post -->
-                <h2>
-                    <a href="#">Blog Post Title</a>
-                </h2>
-                <p class="lead">
-                    by <a href="index.php">Start Bootstrap</a>
-                </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>
-                <hr>
-                <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                <hr>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, voluptates, voluptas dolore ipsam cumque quam veniam accusantium laudantium adipisci architecto itaque dicta aperiam maiores provident id incidunt autem. Magni, ratione.</p>
-                <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                <hr>
+                }
+              ?>
 
                 <!-- Pager -->
                 <ul class="pager">
@@ -150,17 +144,36 @@ include "./includes/db.php";
             <!-- Blog Sidebar Widgets Column -->
             <div class="col-md-4">
 
+              <?php
+                if(isset($_POST['submit'])) {
+                    $search = $_POST['search'];
+                    $searchQuery = mysqli_query($connection, "SELECT * FROM posts WHERE tags LIKE '%$search%'");
+                    if(!$searchQuery) {
+                        die('Query Failed' . mysqli_error($connection));
+                    }
+                    //mysqli_num_rows: lấy về số hàng query ra được
+                    $count = mysqli_num_rows($searchQuery);
+                    if($count === 0) {
+                        echo "<h1>No Result</h1>";
+                    } else {
+                        echo "Some Result";
+                    }
+                }
+              ?>
+
                 <!-- Blog Search Well -->
                 <div class="well">
                     <h4>Blog Search</h4>
-                    <div class="input-group">
-                        <input type="text" class="form-control">
-                        <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
+                    <form method="post" action="search.php">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="search">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" type="submit" name="submit">
                                 <span class="glyphicon glyphicon-search"></span>
                         </button>
                         </span>
-                    </div>
+                        </div>
+                    </form>
                     <!-- /.input-group -->
                 </div>
 
