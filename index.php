@@ -80,6 +80,9 @@ include "./includes/db.php";
                     }
 
                   ?>
+                    <li>
+                        <a href="./admin">Admin</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -183,14 +186,17 @@ include "./includes/db.php";
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
+                                <?php
+                                $categorySidebar = mysqli_query($connection, "SELECT * FROM category");
+                                while($row = mysqli_fetch_assoc($categorySidebar)) {
+                                  $titleSidebar = $row['title'];
+                                  echo "
+                                    <li>
+                                        <a href='#'>{$titleSidebar}</a>
+                                    </li>
+                                    ";
+                                }
+                                ?>
                             </ul>
                         </div>
                         <!-- /.col-lg-6 -->
