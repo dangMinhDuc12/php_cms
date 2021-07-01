@@ -26,20 +26,32 @@
     $postTag = $row['tags'];
     $postCommentCount = $row['comment_count'];
     $postDate = $row['date'];
+    $postImageShow = null;
+    //Hàm str_contains check xem chuỗi ở param thứ 2 có tồn tại trong chuỗi ở param 1 ko, nếu có trả về true
+    if(str_contains($postImage, 'http')) {
+        $postImageShow = $postImage;
+    } else {
+        $postImageShow = "../images/$postImage";
+    }
+
+    $categories = mysqli_query($connection, "SELECT * FROM category WHERE id = $postCatId");
+    while ($row = mysqli_fetch_assoc($categories)) {
+        $catTitle = $row['title'];
+    }
     echo "
                         <tr>
                             <td>{$postId}</td>
                             <td>{$postAuthor}</td>
                             <td>{$postTitle}</td>
-                            <td>{$postCatId}</td>
+                            <td>{$catTitle}</td>
                             <td>{$postStatus}</td>
                             <td>
-                                <img src='{$postImage}' alt='image' width='100'>
+                                <img src='{$postImageShow}' alt='image' width='100'>
                             </td>
                             <td>{$postTag}</td>
                             <td>{$postCommentCount}</td>
                             <td>{$postDate}</td>
-                            <td><a href='posts.php?delete={$postId}'>Delete</a></td>
+                            <td><a style='margin-right: 10px' href='posts.php?delete={$postId}'>Delete</a><a href='posts.php?source=edit_post&p_id={$postId}'>Edit</a></td>
                         </tr>
                         
                         ";
