@@ -106,6 +106,12 @@ include "./includes/db.php";
                     $postsContent = $row['content'];
                     $postsTags = $row['tags'];
                     $image = $row['image'];
+                    $imageShow = null;
+                    if(str_contains($image, 'http')) {
+                        $imageShow = $image;
+                    } else {
+                        $imageShow = "images/$image";
+                    }
                     ?>
                     <h1 class="page-header">
                         Page Heading
@@ -121,7 +127,7 @@ include "./includes/db.php";
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $postsDate?></p>
                     <hr>
-                    <img class="img-responsive" src="<?php echo $image   ?>" alt="">
+                    <img class="img-responsive" src="<?php echo $imageShow   ?>" alt="">
                     <hr>
                     <p><?php echo $postsContent?></p>
                     <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
