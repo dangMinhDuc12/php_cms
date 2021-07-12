@@ -63,7 +63,7 @@ include "./includes/db.php";
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">Start Bootstrap</a>
+                <a class="navbar-brand" href="index.php">CMS</a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -100,6 +100,7 @@ include "./includes/db.php";
               <?php
                 $posts = mysqli_query($connection, "SELECT * FROM posts");
                 while($row = mysqli_fetch_assoc($posts)) {
+                    $postsId = $row['id'];
                     $postsTitle = $row['title'];
                     $postsAuthor = $row['author'];
                     $postsDate = $row['date'];
@@ -120,7 +121,7 @@ include "./includes/db.php";
 
                     <!-- First Blog Post -->
                     <h2>
-                        <a href="#"><?php echo  $postsTitle; ?></a>
+                        <a href="post.php?p_id=<?php echo $postsId?>"><?php echo  $postsTitle; ?></a>
                     </h2>
                     <p class="lead">
                         by <a href="index.php"><?php echo $postsAuthor?></a>
@@ -190,35 +191,22 @@ include "./includes/db.php";
                 <div class="well">
                     <h4>Blog Categories</h4>
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <ul class="list-unstyled">
                                 <?php
                                 $categorySidebar = mysqli_query($connection, "SELECT * FROM category");
                                 while($row = mysqli_fetch_assoc($categorySidebar)) {
+                                  $categoryId = $row['id'];
                                   $titleSidebar = $row['title'];
                                   echo "
                                     <li>
-                                        <a href='#'>{$titleSidebar}</a>
+                                        <a href='category.php?category=$categoryId'>{$titleSidebar}</a>
                                     </li>
                                     ";
                                 }
                                 ?>
                             </ul>
                         </div>
-                        <!-- /.col-lg-6 -->
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- /.col-lg-6 -->
                     </div>
                     <!-- /.row -->
                 </div>

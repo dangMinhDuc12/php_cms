@@ -80,9 +80,9 @@ include "./includes/db.php";
         }
 
         ?>
-          <li>
-              <a href='./admin'>Admin</a>
-          </li>
+        <li>
+          <a href="./admin">Admin</a>
+        </li>
       </ul>
     </div>
     <!-- /.navbar-collapse -->
@@ -98,18 +98,12 @@ include "./includes/db.php";
     <!-- Blog Entries Column -->
     <div class="col-md-8">
       <?php
-      if(isset($_POST['submit'])) {
-        $search = $_POST['search'];
-        $searchQuery = mysqli_query($connection, "SELECT * FROM posts WHERE tags LIKE '%$search%'");
-        if(!$searchQuery) {
-          die('Query Failed' . mysqli_error($connection));
-        }
-        //mysqli_num_rows: lấy về số hàng query ra được
-        $count = mysqli_num_rows($searchQuery);
-        if($count === 0) {
-          echo "<h1>No Result</h1>";
-        } else {
-      while($row = mysqli_fetch_assoc($searchQuery)) {
+      if(isset($_GET['category'])) {
+          $postsCatId = $_GET['category'];
+      }
+      $posts = mysqli_query($connection, "SELECT * FROM posts WHERE category_id = $postsCatId");
+      while($row = mysqli_fetch_assoc($posts)) {
+        $postsId = $row['id'];
         $postsTitle = $row['title'];
         $postsAuthor = $row['author'];
         $postsDate = $row['date'];
@@ -123,33 +117,30 @@ include "./includes/db.php";
           $imageShow = "images/$image";
         }
         ?>
-          <h1 class="page-header">
-              Page Heading
-              <small>Secondary Text</small>
-          </h1>
+        <h1 class="page-header">
+          Page Heading
+          <small>Secondary Text</small>
+        </h1>
 
-          <!-- First Blog Post -->
-          <h2>
-              <a href="#"><?php echo  $postsTitle; ?></a>
-          </h2>
-          <p class="lead">
-              by <a href="index.php"><?php echo $postsAuthor?></a>
-          </p>
-          <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $postsDate?></p>
-          <hr>
-          <img class="img-responsive" src="<?php echo $imageShow   ?>" alt="">
-          <hr>
-          <p><?php echo $postsContent?></p>
-          <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+        <!-- First Blog Post -->
+        <h2>
+          <a href="post.php?p_id=<?php echo $postsId?>"><?php echo  $postsTitle; ?></a>
+        </h2>
+        <p class="lead">
+          by <a href="index.php"><?php echo $postsAuthor?></a>
+        </p>
+        <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $postsDate?></p>
+        <hr>
+        <img class="img-responsive" src="<?php echo $imageShow   ?>" alt="">
+        <hr>
+        <p><?php echo $postsContent?></p>
+        <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
-          <hr>
+        <hr>
         <?php
 
       }
-        }
-      }
       ?>
-
 
       <!-- Pager -->
       <ul class="pager">
@@ -167,13 +158,26 @@ include "./includes/db.php";
     <div class="col-md-4">
 
       <?php
-
+      if(isset($_POST['submit'])) {
+        $search = $_POST['search'];
+        $searchQuery = mysqli_query($connection, "SELECT * FROM posts WHERE tags LIKE '%$search%'");
+        if(!$searchQuery) {
+          die('Query Failed' . mysqli_error($connection));
+        }
+        //mysqli_num_rows: lấy về số hàng query ra được
+        $count = mysqli_num_rows($searchQuery);
+        if($count === 0) {
+          echo "<h1>No Result</h1>";
+        } else {
+          echo "Some Result";
+        }
+      }
       ?>
 
       <!-- Blog Search Well -->
       <div class="well">
         <h4>Blog Search</h4>
-        <form method="post">
+        <form method="post" action="search.php">
           <div class="input-group">
             <input type="text" class="form-control" name="search">
             <span class="input-group-btn">
@@ -190,35 +194,22 @@ include "./includes/db.php";
       <div class="well">
         <h4>Blog Categories</h4>
         <div class="row">
-          <div class="col-lg-6">
+          <div class="col-lg-12">
             <ul class="list-unstyled">
               <?php
               $categorySidebar = mysqli_query($connection, "SELECT * FROM category");
               while($row = mysqli_fetch_assoc($categorySidebar)) {
+                  $categoryId = $row['id'];
                 $titleSidebar = $row['title'];
                 echo "
-                    <li>
-                        <a href='#'>{$titleSidebar}</a>
-                    </li>
-                    ";
-                  }
+                                    <li>
+                                        <a href='category.php?category=$categoryId'>{$titleSidebar}</a>
+                                    </li>
+                                    ";
+              }
               ?>
             </ul>
           </div>
-          <!-- /.col-lg-6 -->
-          <div class="col-lg-6">
-            <ul class="list-unstyled">
-              <li><a href="#">Category Name</a>
-              </li>
-              <li><a href="#">Category Name</a>
-              </li>
-              <li><a href="#">Category Name</a>
-              </li>
-              <li><a href="#">Category Name</a>
-              </li>
-            </ul>
-          </div>
-          <!-- /.col-lg-6 -->
         </div>
         <!-- /.row -->
       </div>
