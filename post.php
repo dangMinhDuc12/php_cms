@@ -143,7 +143,17 @@ include "./includes/db.php";
             <!-- Blog Comments -->
           <?php
             if(isset($_POST['create_comment'])) {
-                echo $_POST['comment_author'];
+                $comment_author = $_POST['comment_author'];
+                $comment_email = $_POST['comment_email'];
+                $comment_content = $_POST['comment_content'];
+                $comment_date = date('Y-m-d');
+                $create_comment = mysqli_query($connection, "
+                INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date)
+                VALUES ($thePostId, '$comment_author', '$comment_email', '$comment_content', 'unapproved', '$comment_date')
+                ");
+                if(!$create_comment) {
+                    die('Comment failed'. mysqli_error($connection));
+                }
             }
           ?>
             <!-- Comments Form -->

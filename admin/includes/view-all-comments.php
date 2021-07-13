@@ -24,6 +24,11 @@
     $comment_content = $row['comment_content'];
     $comment_status = $row['comment_status'];
     $comment_date = $row['comment_date'];
+    $posts = mysqli_query($connection, "SELECT * FROM posts WHERE id = $comment_post_id");
+    while ($row = mysqli_fetch_assoc($posts)) {
+      $post_title = $row['title'];
+      $post_id = $row['id'];
+    }
 
     echo "
                         <tr>
@@ -32,23 +37,38 @@
                             <td>{$comment_content}</td>
                             <td>{$comment_email}</td>
                             <td>{$comment_status}</td>
-                            <td>In respon to</td>
+                            <td><a href='../post.php?p_id=$post_id'>{$post_title}</a></td>
                             <td>{$comment_date}</td>
-                            <td><a>Approve</a></td>
-                            <td><a>Unapprove</a></td>
-                            <td><a>Delete</a></td>
+                            <td><a href='comments.php?approved=$comment_id'>Approve</a></td>
+                            <td><a href='comments.php?unapproved=$comment_id'>Unapprove</a></td>
+                            <td><a href='comments.php?delete=$comment_id'>Delete</a></td>
                         </tr>
                         
                         ";
   }
   ?>
-
   <?php
-  if(isset($_GET['delete'])) {
-    if(!mysqli_query($connection, "DELETE FROM posts WHERE id = {$_GET['delete']}")) {
-      die('Delete Failed' . mysqli_error($connection));
+    if(isset($_GET['delete'])) {
+        $post_id_delete = $_GET['delete'];
+        if(!mysqli_query($connection, "DELETE FROM comments WHERE id = $post_id_delete")) {
+            die('Delete comment failed' . mysqli_error($connection));
+      }
+        header('Location:comments.php');
     }
-    header('Location: posts.php');
+
+    if(isset($_GET['approved'])) {
+        $comment_id_update = $_GET['approved'];
+        if(!mysqli_query($connection, "UPDATE comments SET comment_status = 'approved' WHERE id = $comment_id_update")) {
+            die('Update failed' . mysqli_error($connection));
+        }
+        header("Location:comments.php");
+    }
+  if(isset($_GET['unapproved'])) {
+    $comment_id_update = $_GET['unapproved'];
+    if(!mysqli_query($connection, "UPDATE comments SET comment_status = 'unapproved' WHERE id = $comment_id_update")) {
+      die('Update failed' . mysqli_error($connection));
+    }
+    header("Location:comments.php");
   }
   ?>
   </tbody>
