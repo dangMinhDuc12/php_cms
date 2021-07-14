@@ -13,7 +13,7 @@ if(isset($_POST['create_post'])) {
     $postContent = $_POST['post_content'];
     $postImage = $_FILES['image']['name'];
     $postDate = date('Y-m-d');
-    $postCommentCount = 3;
+    $postCommentCount = 0;
     move_uploaded_file($_FILES['image']['tmp_name'], "../images/$postImage");
 
     $createPost = mysqli_query($connection, "

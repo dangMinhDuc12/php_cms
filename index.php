@@ -108,12 +108,16 @@ include "./includes/db.php";
                     $postsTags = $row['tags'];
                     $image = $row['image'];
                     $imageShow = null;
+                    $postStatus = $row['status'];
                     if(str_contains($image, 'http')) {
                         $imageShow = $image;
                     } else {
                         $imageShow = "images/$image";
                     }
+                    if($postStatus === 'publish') {
+
                     ?>
+
                     <h1 class="page-header">
                         Page Heading
                         <small>Secondary Text</small>
@@ -136,7 +140,7 @@ include "./includes/db.php";
                     <hr>
                 <?php
 
-                }
+                }}
               ?>
 
                 <!-- Pager -->
