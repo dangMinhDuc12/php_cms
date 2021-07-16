@@ -21,7 +21,7 @@
                 // Insert data
                 if (isset($_POST['submit'])) {
                    $categoryAdd = $_POST['cat_title'];
-                   // Hàm empty check xem biến có giá trị hay không, nếu có trả về false, nếu không có giá trị, hoặc bằng null, bằng 0 thì trả về true
+                   // Hàm empty check xem biến có giá trị hay không, nếu có trả về false, nếu không có giá trị, hoặc bằng null, bằng 0 thì trả về true **
                    if ($categoryAdd === '' || empty($categoryAdd)) {
                        echo "This field should not be empty";
                    } else {
