@@ -191,6 +191,25 @@ include "./includes/db.php";
                     <!-- /.input-group -->
                 </div>
 
+
+                <!-- Login -->
+                <div class="well">
+                    <h4>Login</h4>
+                    <form method="post" action="./admin/includes/login.php">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="email" placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" name="password" placeholder="Enter your password">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" name="login">Login</button>
+                        </div>
+                    </form>
+                    <!-- /.input-group -->
+                </div>
+
+
                 <!-- Blog Categories Well -->
                 <div class="well">
                     <h4>Blog Categories</h4>
