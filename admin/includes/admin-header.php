@@ -1,6 +1,15 @@
 <?php
 ob_start();
+session_start();
 include '../includes/db.php';
+
+if($_SESSION['login_user_role']) {
+    if($_SESSION['login_user_role'] === 'subscriber') {
+        header("Location: ../index.php");
+    }
+} else {
+  header("Location: ../index.php");
+}
 ?>
 
 
