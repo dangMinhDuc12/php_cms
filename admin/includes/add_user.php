@@ -51,10 +51,7 @@ if(isset($_POST['create_user'])) {
     <label for="post_status">Username</label>
     <input type="text" class="form-control" name="username">
   </div>
-<!--  <div class="form-group">-->
-<!--    <label for="post_image">Post Image</label>-->
-<!--    <input type="file"  name="image">-->
-<!--  </div>-->
+
   <div class="form-group">
     <label for="post_tags">Email</label>
     <input type="email" class="form-control" name="user_email">
