@@ -33,7 +33,7 @@ include "./includes/db.php";
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Blog Home - Start Bootstrap Template</title>
+    <title>Football Blog Home</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -63,7 +63,7 @@ include "./includes/db.php";
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">CMS</a>
+                <a class="navbar-brand" href="index.php">Football Blog </a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -135,7 +135,7 @@ include "./includes/db.php";
                     <img class="img-responsive" src="<?php echo $imageShow   ?>" alt="">
                     <hr>
                     <p><?php echo $postsContent?></p>
-                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <a class="btn btn-primary" href="post.php?p_id=<?php echo $postsId?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                     <hr>
                 <?php

@@ -144,6 +144,29 @@
                     </div>
                 </div>
                 <!-- /.row -->
+              <?php
+              $queryPostsDraft = mysqli_query($connection, "
+                                        SELECT * FROM posts WHERE status = 'draft'
+                                        
+                                        ");
+              $numberPostsDraft = mysqli_num_rows($queryPostsDraft);
+
+
+              $queryCommentsUnapproved = mysqli_query($connection, "
+                                        SELECT * FROM comments WHERE comment_status = 'unapproved'
+                                        
+                                        ");
+              $numberCommentsUnapproved = mysqli_num_rows($queryCommentsUnapproved);
+
+              $queryUsersSubscriber = mysqli_query($connection, "
+                                        SELECT * FROM users WHERE user_role = 'subscriber'
+                                        
+                                        ");
+              $numberUsersSubscriber = mysqli_num_rows($queryUsersSubscriber);
+              ?>
+
+
+
                 <div class="row">
                     <div id="columnchart_material" style="width: auto; height: 500px;"></div>
                 </div>
@@ -168,7 +191,15 @@
     function drawChart() {
         var data = google.visualization.arrayToDataTable([
             ['Data', 'Count'],
-            ['Posts', 1000],
+
+            <?php
+                $element_text = ['All Posts', 'Draft Posts', 'All Comments', 'Unapproved Comments', 'All Users', 'Subscriber Users', 'Categories'];
+                $element_count = [$numberPosts, $numberPostsDraft, $numberComments, $numberCommentsUnapproved, $numberUsers, $numberUsersSubscriber, $numberCategory];
+                for($i = 0; $i < count($element_count); $i++) {
+                    echo "['$element_text[$i]', $element_count[$i]],";
+                }
+            ?>
+
         ]);
 
         var options = {

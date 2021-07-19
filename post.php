@@ -133,7 +133,7 @@ include "./includes/db.php";
               <img class="img-responsive" src="<?php echo $imageShow   ?>" alt="">
               <hr>
               <p><?php echo $postsContent?></p>
-              <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+
 
               <hr>
             <?php

@@ -25,7 +25,7 @@ if($_SESSION['login_user_role']) {
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin - Bootstrap Admin Template</title>
+  <title>Football Blog Admin</title>
 
   <!-- Bootstrap Core CSS -->
   <link href="css/bootstrap.min.css" rel="stylesheet">

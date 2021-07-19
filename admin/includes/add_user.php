@@ -22,6 +22,8 @@ if(isset($_POST['create_user'])) {
     ");
   if(!$createUser) {
     die('Insert Failed' . mysqli_error($connection));
+  } else {
+      echo "User Created <a href='users.php'>View All Users</a>";
   }
 }
 
