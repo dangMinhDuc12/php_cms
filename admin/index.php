@@ -193,6 +193,7 @@
             ['Data', 'Count'],
 
             <?php
+            // Hàm count(array) giống với array.length JS
                 $element_text = ['All Posts', 'Draft Posts', 'All Comments', 'Unapproved Comments', 'All Users', 'Subscriber Users', 'Categories'];
                 $element_count = [$numberPosts, $numberPostsDraft, $numberComments, $numberCommentsUnapproved, $numberUsers, $numberUsersSubscriber, $numberCategory];
                 for($i = 0; $i < count($element_count); $i++) {

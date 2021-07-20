@@ -96,7 +96,21 @@ if(isset($_POST['update_post'])) {
   </div>
   <div class="form-group">
     <label for="post_status">Post status</label>
-    <input type="text" class="form-control" name="post_status" value="<?php echo $postStatus; ?>">
+      <select name="post_status" class="form-control">
+        <?php
+            if($postStatus === 'publish') {
+                echo "
+                    <option value='publish' selected>Publish</option>
+                    <option value='draft'>Draft</option>
+                ";
+            } else {
+              echo "
+                    <option value='publish' >Publish</option>
+                    <option value='draft' selected>Draft</option>
+                ";
+            }
+        ?>
+      </select>
   </div>
   <div class="form-group">
       <img width="100" src="<?php if(str_contains($postImage, 'http')) {

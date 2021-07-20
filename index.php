@@ -14,6 +14,7 @@ include "./includes/db.php";
  * ?>
  *
  * */
+session_start();
 
 ?>
 
@@ -193,7 +194,10 @@ include "./includes/db.php";
 
 
                 <!-- Login -->
-                <div class="well">
+              <?php
+                if(empty($_SESSION['login_user_id'])) {
+                    echo '
+                         <div class="well">
                     <h4>Login</h4>
                     <form method="post" action="./admin/includes/login.php">
                         <div class="form-group">
@@ -208,6 +212,13 @@ include "./includes/db.php";
                     </form>
                     <!-- /.input-group -->
                 </div>
+                    
+                    ';
+                } else {
+                    echo '';
+                }
+              ?>
+
 
 
                 <!-- Blog Categories Well -->
