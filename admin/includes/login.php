@@ -11,7 +11,7 @@ if(isset($_POST['login'])) {
 
   $loginForUser= mysqli_query($connection, "
     SELECT * FROM users WHERE user_email = '$email' AND user_password = '$password'
-  
+    AND user_role = 'admin'
   ");
   if(!$loginForUser) {
     die("Login Failed" . mysqli_error($connection));
@@ -19,7 +19,7 @@ if(isset($_POST['login'])) {
 
   $checkLogin = mysqli_num_rows($loginForUser);
   if(!$checkLogin) {
-    echo "Email or Password wrong";
+    echo "Email or Password wrong or you not have permission";
   } else {
       while ($row = mysqli_fetch_assoc($loginForUser)) {
         $login_user_id = $row['user_id'];

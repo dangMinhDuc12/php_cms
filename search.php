@@ -72,9 +72,10 @@ include "./includes/db.php";
         $category = mysqli_query($connection, "SELECT * FROM category");
         while($row = mysqli_fetch_assoc($category)) {
           $title = $row['title'];
+          $categoryId = $row['id'];
           echo "
                         <li>
-                            <a href='#'>{$title}</a>
+                            <a href='category.php?category=$categoryId'>{$title}</a>
                         </li>
                         ";
         }

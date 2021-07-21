@@ -72,18 +72,23 @@ session_start();
                   <?php
                     $category = mysqli_query($connection, "SELECT * FROM category");
                     while($row = mysqli_fetch_assoc($category)) {
+                        $categoryId = $row['id'];
                         $title = $row['title'];
                         echo "
                         <li>
-                            <a href='#'>{$title}</a>
+                            <a href='category.php?category=$categoryId'>{$title}</a>
                         </li>
                         ";
                     }
 
                   ?>
-                    <li>
-                        <a href="./admin">Admin</a>
-                    </li>
+                  <?php
+                    if(isset($_SESSION['login_user_id']) && $_SESSION['login_user_role'] === 'admin') {
+                        echo "<li>
+                                    <a href='./admin'>Admin</a>
+                            </li>";
+                    }
+                  ?>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -133,7 +138,10 @@ session_start();
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $postsDate?></p>
                     <hr>
-                    <img class="img-responsive" src="<?php echo $imageShow   ?>" alt="">
+                        <a href="post.php?p_id=<?php echo $postsId?>">
+                            <img class="img-responsive" src="<?php echo $imageShow   ?>" alt="">
+                        </a>
+
                     <hr>
                     <p><?php echo $postsContent?></p>
                     <a class="btn btn-primary" href="post.php?p_id=<?php echo $postsId?>">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>

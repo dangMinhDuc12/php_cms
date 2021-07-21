@@ -1,6 +1,37 @@
+<?php
+if(isset($_POST['checkBoxArray'])) {
+    //Thêm name có dấu mảng [] thì trong biến $_POST['name mảng'] ta có thể lấy được tất cả các giá trị mà ta check vào ô checkbox
+  foreach ($_POST['checkBoxArray'] as $checkBoxValue) {
+      echo $checkBoxValue;
+      $bulk_option = $_POST['bulk_option'];
+  }
+}
+?>
+
+
+
+
+
+<form action="" method="post">
+
+    <div id="bulkOptionsContainer" class="col-xs-4" style="margin-bottom: 10px">
+        <select name="bulk_option" id="" class="form-control">
+            <option value="">Select Options</option>
+            <option value="">Publish</option>
+            <option value="">Draft</option>
+            <option value="">Delete</option>
+        </select>
+    </div>
+    <div class="col-xs-4">
+        <input type="submit" name="submit" class="btn btn-success" value="Apply">
+        <a href="add_post.php" class="btn btn-primary">Add new</a>
+    </div>
 <table class="table table-bordered table-hover">
+
+
   <thead>
   <tr>
+    <th><input type="checkbox" id="selectAllBoxes"></th>
     <th>ID</th>
     <th>Author</th>
     <th>Title</th>
@@ -40,6 +71,7 @@
     }
     echo "
                         <tr>
+                            <td><input type='checkbox' class='checkBoxChild' name='checkBoxArray[]' value='$postId'></td>
                             <td>{$postId}</td>
                             <td>{$postAuthor}</td>
                             <td>{$postTitle}</td>
@@ -68,3 +100,4 @@
   ?>
   </tbody>
 </table>
+</form>
