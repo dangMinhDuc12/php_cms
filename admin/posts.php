@@ -66,6 +66,7 @@
         });
     });
 </script>
+<script src="./js/posts.js"></script>
 
 </body>
 

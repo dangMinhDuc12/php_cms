@@ -2,8 +2,40 @@
 if(isset($_POST['checkBoxArray'])) {
     //Thêm name có dấu mảng [] thì trong biến $_POST['name mảng'] ta có thể lấy được tất cả các giá trị mà ta check vào ô checkbox
   foreach ($_POST['checkBoxArray'] as $checkBoxValue) {
-      echo $checkBoxValue;
       $bulk_option = $_POST['bulk_option'];
+      switch ($bulk_option) {
+        case 'publish': {
+              $update_to_publish = mysqli_query($connection, "
+              
+                UPDATE posts SET status = 'publish' WHERE id = $checkBoxValue
+              
+              ");
+              if(!$update_to_publish) {
+                  die("update failed" . mysqli_error($connection));
+              }
+             break;
+          }
+        case 'draft': {
+          $update_to_draft = mysqli_query($connection, "
+              
+                UPDATE posts SET status = 'draft' WHERE id = $checkBoxValue
+              
+              ");
+          if(!$update_to_draft) {
+            die("update failed" . mysqli_error($connection));
+          }
+          break;
+        }
+        case 'delete': {
+            $delete_select_post = mysqli_query($connection, "
+                DELETE FROM posts WHERE id = $checkBoxValue
+            ");
+            if(!$delete_select_post) {
+                die('delete failed' . mysqli_error($connection));
+            }
+            break;
+        }
+      }
   }
 }
 ?>
@@ -17,14 +49,14 @@ if(isset($_POST['checkBoxArray'])) {
     <div id="bulkOptionsContainer" class="col-xs-4" style="margin-bottom: 10px">
         <select name="bulk_option" id="" class="form-control">
             <option value="">Select Options</option>
-            <option value="">Publish</option>
-            <option value="">Draft</option>
-            <option value="">Delete</option>
+            <option value="publish">Publish</option>
+            <option value="draft">Draft</option>
+            <option value="delete">Delete</option>
         </select>
     </div>
     <div class="col-xs-4">
         <input type="submit" name="submit" class="btn btn-success" value="Apply">
-        <a href="add_post.php" class="btn btn-primary">Add new</a>
+        <a href="posts.php?source=add_post" class="btn btn-primary">Add new</a>
     </div>
 <table class="table table-bordered table-hover">
 
@@ -83,7 +115,7 @@ if(isset($_POST['checkBoxArray'])) {
                             <td>{$postTag}</td>
                             <td>{$postCommentCount}</td>
                             <td>{$postDate}</td>
-                            <td><a style='margin-right: 10px' href='posts.php?delete={$postId}'>Delete</a><a href='posts.php?source=edit_post&p_id={$postId}'>Edit</a></td>
+                            <td><a style='margin-right: 10px' href='posts.php?delete={$postId}'>Delete</a><a style='margin-right: 10px' href='posts.php?source=edit_post&p_id={$postId}'>Edit</a><a href='../post.php?p_id={$postId}'>Go to post</a></td>
                         </tr>
                         
                         ";

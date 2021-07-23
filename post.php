@@ -167,19 +167,25 @@ session_start();
                 $comment_email = $_POST['comment_email'];
                 $comment_content = $_POST['comment_content'];
                 $comment_date = date('Y-m-d');
-                $create_comment = mysqli_query($connection, "
+                if(!empty($comment_author && !empty($comment_content) && !empty($comment_email))) {
+                  $create_comment = mysqli_query($connection, "
                 INSERT INTO comments (comment_post_id, comment_author, comment_email, comment_content, comment_status, comment_date)
                 VALUES ($thePostId, '$comment_author', '$comment_email', '$comment_content', 'unapproved', '$comment_date')
                 ");
-                if(!$create_comment) {
+                  if(!$create_comment) {
                     die('Comment failed'. mysqli_error($connection));
-                }
-                if(!mysqli_query($connection, "
+                  }
+                  if(!mysqli_query($connection, "
                  UPDATE posts SET comment_count = comment_count + 1
                 WHERE id = $thePostId
                 ")) {
                     die('Update comment count failed' . mysqli_error($connection));
+                  }
+                } else {
+                    echo "
+                    <script>alert('Please fill all field')</script>";
                 }
+
             }
           ?>
             <!-- Comments Form -->
