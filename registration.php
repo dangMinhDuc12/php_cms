@@ -2,7 +2,32 @@
 <?php
 if(isset($_POST['submit'])) {
     $username = $_POST['username'];
-    echo $username;
+    $password = $_POST['password'];
+    $email = $_POST['email'];
+
+    if(!empty($username) && !empty($password) && !empty($email)) {
+      define("randSalt", '$2y$10$iusesomecrazystrings22');
+      $username = mysqli_real_escape_string($connection, $username);
+      $password = mysqli_real_escape_string($connection, $password);
+      $email = mysqli_real_escape_string($connection, $email);
+
+      $password = crypt($password, randSalt);
+      $create_user_account = mysqli_query($connection, "
+    INSERT INTO users (user_name, user_email, user_password, user_role)
+    VALUES ('$username', '$email', '$password', 'subscriber')
+
+");
+      if(!$create_user_account) {
+        die('create user failed' . mysqli_error($connection));
+      }
+      $message = 'Create account success';
+    } else {
+        $message = 'This field cannot be empty';
+    }
+
+
+} else {
+    $message = '';
 }
 ?>
 
@@ -92,6 +117,7 @@ if(isset($_POST['submit'])) {
                 <div class="form-wrap">
                 <h1>Register</h1>
                     <form role="form" action="registration.php" method="post" id="login-form" autocomplete="off">
+                        <h6 class="text-center"><?php echo $message;?></h6>
                         <div class="form-group">
                             <label for="username" class="sr-only">username</label>
                             <input type="text" name="username" id="username" class="form-control" placeholder="Enter Desired Username">

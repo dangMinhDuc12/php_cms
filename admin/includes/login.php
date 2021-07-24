@@ -3,11 +3,13 @@ include '../../includes/db.php';
 session_start();
 
 if(isset($_POST['login'])) {
+  define("randSalt", '$2y$10$iusesomecrazystrings22');
   $email = $_POST['email'];
   $password = $_POST['password'];
 
   $email = mysqli_real_escape_string($connection, $email);
   $password = mysqli_real_escape_string($connection, $password);
+  $password = crypt($password, randSalt);
 
   $loginForUser= mysqli_query($connection, "
     SELECT * FROM users WHERE user_email = '$email' AND user_password = '$password'

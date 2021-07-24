@@ -87,6 +87,10 @@ session_start();
                         echo "<li>
                                     <a href='./admin'>Admin</a>
                             </li>";
+                    } else {
+                      echo "<li>
+                                    <a href='./registration.php'>Register</a>
+                            </li>";
                     }
                   ?>
                 </ul>
