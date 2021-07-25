@@ -1,41 +1,69 @@
 <?php
 if(isset($_POST['checkBoxArray'])) {
-    //Thêm name có dấu mảng [] thì trong biến $_POST['name mảng'] ta có thể lấy được tất cả các giá trị mà ta check vào ô checkbox
+  //Thêm name có dấu mảng [] thì trong biến $_POST['name mảng'] ta có thể lấy được tất cả các giá trị mà ta check vào ô checkbox
   foreach ($_POST['checkBoxArray'] as $checkBoxValue) {
-      $bulk_option = $_POST['bulk_option'];
-      switch ($bulk_option) {
-        case 'publish': {
-              $update_to_publish = mysqli_query($connection, "
+    $bulk_option = $_POST['bulk_option'];
+    switch ($bulk_option) {
+      case 'publish':
+      {
+        $update_to_publish = mysqli_query($connection, "
               
                 UPDATE posts SET status = 'publish' WHERE id = $checkBoxValue
               
               ");
-              if(!$update_to_publish) {
-                  die("update failed" . mysqli_error($connection));
-              }
-             break;
-          }
-        case 'draft': {
-          $update_to_draft = mysqli_query($connection, "
+        if (!$update_to_publish) {
+          die("update failed" . mysqli_error($connection));
+        }
+        break;
+      }
+      case 'draft':
+      {
+        $update_to_draft = mysqli_query($connection, "
               
                 UPDATE posts SET status = 'draft' WHERE id = $checkBoxValue
               
               ");
-          if(!$update_to_draft) {
-            die("update failed" . mysqli_error($connection));
-          }
-          break;
+        if (!$update_to_draft) {
+          die("update failed" . mysqli_error($connection));
         }
-        case 'delete': {
-            $delete_select_post = mysqli_query($connection, "
+        break;
+      }
+      case 'delete':
+      {
+        $delete_select_post = mysqli_query($connection, "
                 DELETE FROM posts WHERE id = $checkBoxValue
             ");
-            if(!$delete_select_post) {
-                die('delete failed' . mysqli_error($connection));
-            }
-            break;
+        if (!$delete_select_post) {
+          die('delete failed' . mysqli_error($connection));
         }
+        break;
       }
+      case 'clone': {
+        $postsClone = mysqli_query($connection, "SELECT * FROM posts WHERE id = $checkBoxValue");
+        while($row = mysqli_fetch_assoc($postsClone)) {
+          $postIdClone = $row['id'];
+          $postAuthorClone = $row['author'];
+          $postTitleClone = $row['title'];
+          $postCatIdClone = $row['category_id'];
+          $postStatusClone = $row['status'];
+          $postImageClone = $row['image'];
+          $postTagClone = $row['tags'];
+          $postContentClone = $row['content'];
+          $postCommentCountClone = $row['comment_count'];
+          $postDateClone = $row['date'];
+          $postImageShowClone = null;
+
+        }
+        $createPostClone = mysqli_query($connection, "
+        INSERT INTO posts (title, category_id, author, status, tags, content, image, date, comment_count)
+        VALUES ('$postTitleClone', $postCatIdClone, '$postAuthorClone', '$postStatusClone', '$postTagClone', '$postContentClone', '$postImageClone', '$postDateClone', '$postCommentCountClone')
+    ");
+        if(!$createPostClone) {
+          die('Insert Failed' . mysqli_error($connection));
+        }
+        break;
+      }
+    }
   }
 }
 ?>
@@ -52,6 +80,7 @@ if(isset($_POST['checkBoxArray'])) {
             <option value="publish">Publish</option>
             <option value="draft">Draft</option>
             <option value="delete">Delete</option>
+            <option value="clone">Clone</option>
         </select>
     </div>
     <div class="col-xs-4">
@@ -78,7 +107,7 @@ if(isset($_POST['checkBoxArray'])) {
   </thead>
   <tbody>
   <?php
-  $posts = mysqli_query($connection, "SELECT * FROM posts");
+  $posts = mysqli_query($connection, "SELECT * FROM posts ORDER BY id DESC ");
   while($row = mysqli_fetch_assoc($posts)) {
     $postId = $row['id'];
     $postAuthor = $row['author'];
@@ -115,7 +144,7 @@ if(isset($_POST['checkBoxArray'])) {
                             <td>{$postTag}</td>
                             <td>{$postCommentCount}</td>
                             <td>{$postDate}</td>
-                            <td><a style='margin-right: 10px' href='posts.php?delete={$postId}'>Delete</a><a style='margin-right: 10px' href='posts.php?source=edit_post&p_id={$postId}'>Edit</a><a href='../post.php?p_id={$postId}'>Go to post</a></td>
+                            <td><a style='margin-right: 10px' href='posts.php?delete={$postId}' class='delete-post' onclick=\"return confirm('Are you sure want to delete')\">Delete</a><a style='margin-right: 10px' href='posts.php?source=edit_post&p_id={$postId}'>Edit</a><a href='../post.php?p_id={$postId}'>Go to post</a></td>
                         </tr>
                         
                         ";

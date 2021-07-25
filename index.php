@@ -138,7 +138,7 @@ session_start();
                         <a href="post.php?p_id=<?php echo $postsId?>"><?php echo  $postsTitle; ?></a>
                     </h2>
                     <p class="lead">
-                        by <a href="index.php"><?php echo $postsAuthor?></a>
+                        by <a href="author_posts.php?author=<?php echo $postsAuthor?>&p_id=<?php echo $postsId?>"><?php echo $postsAuthor?></a>
                     </p>
                     <p><span class="glyphicon glyphicon-time"></span> Posted on <?php echo $postsDate?></p>
                     <hr>

@@ -20,6 +20,7 @@
 ?>
 
 <?php
+const randSalt = '$2y$10$iusesomecrazystrings22';
 if(isset($_POST['edit_user'])) {
 
   $user_firstname = $_POST['user_firstname'];
@@ -29,6 +30,7 @@ if(isset($_POST['edit_user'])) {
   $user_password = $_POST['user_password'];
   $username = $_POST['username'];
 
+  $user_password = crypt($user_password, randSalt);
 
   $editUser = mysqli_query($connection, "
         UPDATE users SET 
