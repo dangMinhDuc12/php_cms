@@ -41,6 +41,7 @@ session_start();
 
     <!-- Custom CSS -->
     <link href="css/blog-home.css" rel="stylesheet">
+    <link href="css/styles.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -108,7 +109,25 @@ session_start();
             <!-- Blog Entries Column -->
             <div class="col-md-8">
               <?php
-                $posts = mysqli_query($connection, "SELECT * FROM posts");
+                $postsCountQuery = mysqli_query($connection, "SELECT * FROM posts");
+                $postsCount = mysqli_num_rows($postsCountQuery);
+                $pageSize = 5;
+                $postsCount = ceil($postsCount / $pageSize);
+
+
+                if(isset($_GET['page'])) {
+                    $page = $_GET['page'];
+                } else {
+                    $page = 1;
+                }
+
+                if($page === '' || $page === 1) {
+                    $numberItemStart = 0;
+                } else {
+                    $numberItemStart = ($page * $pageSize) - $pageSize;
+                }
+                //Câu lệnh LIMIT ở dưới có nghĩa là bảo db trả ra $pageSize phần tử bắt đầu ở bản ghi $numberItemStart
+                $posts = mysqli_query($connection, "SELECT * FROM posts LIMIT $numberItemStart, $pageSize");
                 while($row = mysqli_fetch_assoc($posts)) {
                     $postsId = $row['id'];
                     $postsTitle = $row['title'];
@@ -269,7 +288,23 @@ session_start();
         <!-- /.row -->
 
         <hr>
+        <ul class="pager">
+          <?php
+            for ($i = 1; $i <= $postsCount; $i++) {
+                //(int)$variable: chuyển đổi kiểu chữ thành số
+                if($i === (int)$page) {
+                  echo "
+                    <li><a class='active_link' href='index.php?page={$i}'>{$i}</a></li>
+                ";
+                } else {
+                  echo "
+                    <li><a  href='index.php?page={$i}'>{$i}</a></li>
+                ";
+                }
 
+            }
+          ?>
+        </ul>
         <!-- Footer -->
         <footer>
             <div class="row">

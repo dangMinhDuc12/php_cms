@@ -120,6 +120,11 @@ session_start();
           <?php
           if(isset($_GET['p_id'])) {
               $thePostId = $_GET['p_id'];
+          if(!mysqli_query($connection, "
+            UPDATE posts SET view_count = view_count + 1 WHERE id = $thePostId
+          
+          ")) {
+              die('Update failed' . mysqli_error($connection));
           }
           $posts = mysqli_query($connection, "SELECT * FROM posts WHERE id = $thePostId");
           while($row = mysqli_fetch_assoc($posts)) {
@@ -158,6 +163,9 @@ session_start();
               <hr>
             <?php
 
+          }
+          } else {
+              header("Location:index.php");
           }
           ?>
             <!-- Blog Comments -->

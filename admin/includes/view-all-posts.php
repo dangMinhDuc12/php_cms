@@ -101,6 +101,7 @@ if(isset($_POST['checkBoxArray'])) {
     <th>Image</th>
     <th>Tags</th>
     <th>Comment Count</th>
+    <th>View Count</th>
     <th>Date</th>
     <th>Action</th>
   </tr>
@@ -118,6 +119,7 @@ if(isset($_POST['checkBoxArray'])) {
     $postTag = $row['tags'];
     $postCommentCount = $row['comment_count'];
     $postDate = $row['date'];
+    $postViewCount = $row['view_count'];
     $postImageShow = null;
     //Hàm str_contains check xem chuỗi ở param thứ 2 có tồn tại trong chuỗi ở param 1 ko, nếu có trả về true
     if(str_contains($postImage, 'http')) {
@@ -143,6 +145,7 @@ if(isset($_POST['checkBoxArray'])) {
                             </td>
                             <td>{$postTag}</td>
                             <td>{$postCommentCount}</td>
+                            <td><a href='posts.php?reset=$postId'>{$postViewCount}</a></td>
                             <td>{$postDate}</td>
                             <td><a style='margin-right: 10px' href='posts.php?delete={$postId}' class='delete-post' onclick=\"return confirm('Are you sure want to delete')\">Delete</a><a style='margin-right: 10px' href='posts.php?source=edit_post&p_id={$postId}'>Edit</a><a href='../post.php?p_id={$postId}'>Go to post</a></td>
                         </tr>
@@ -158,6 +161,12 @@ if(isset($_POST['checkBoxArray'])) {
         }
         header('Location: posts.php');
     }
+  if(isset($_GET['reset'])) {
+    if(!mysqli_query($connection, "UPDATE  posts SET view_count = 0 WHERE id = {$_GET['reset']}")) {
+      die('Update Failed' . mysqli_error($connection));
+    }
+    header('Location: posts.php');
+  }
   ?>
   </tbody>
 </table>
