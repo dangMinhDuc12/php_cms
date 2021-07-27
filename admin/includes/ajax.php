@@ -6,5 +6,5 @@ if(isset($_GET['onlineuser'])) {
     'age' => 20
   ];
   $arr = ['Nam', 'Duong'];
-  echo json_encode($arr);
+  echo json_encode($object);
 }
