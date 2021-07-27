@@ -1,7 +1,6 @@
 <?php include './includes/admin-header.php';?>
-
+<?php include './includes/ajax.php';?>
     <div id="wrapper">
-
         <?php  include './includes/admin-navigation.php';?>
 
         <div id="page-wrapper">
@@ -15,6 +14,7 @@
                             Welcome to admin page
                             <small><?php echo $_SESSION['login_user_name']?></small>
                         </h1>
+
                     </div>
                 </div>
                 <!-- /.row -->
@@ -215,7 +215,7 @@
         chart.draw(data, google.charts.Bar.convertOptions(options));
     }
 </script>
-
+<script src="./js/ajax.js"></script>
 </body>
 
 </html>

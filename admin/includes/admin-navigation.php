@@ -12,6 +12,35 @@
   </div>
   <!-- Top Menu Items -->
   <ul class="nav navbar-right top-nav">
+    <?php
+    //Hàm session id sinh ra một id cho mỗi 1 phiên làm việc session
+    $session = session_id();
+    $time = time();
+    $time_out_in_seconds = 10;
+    $time_out = $time - $time_out_in_seconds;
+
+    $usersOnlineQuery = mysqli_query($connection, "
+        SELECT * FROM users_online WHERE session = '{$session}'
+      ");
+    $usersOnlineCount = mysqli_num_rows($usersOnlineQuery);
+    if(!$usersOnlineCount) {
+      mysqli_query($connection, "
+            INSERT INTO users_online (session, time) VALUES ('{$session}', '{$time}')
+          ");
+    } else {
+      mysqli_query($connection, "
+            UPDATE users_online SET time = '{$time}' WHERE session = '{$session}'
+          ");
+    }
+    $numberUserOnlineQuery = mysqli_query($connection, "
+            SELECT * FROM users_online WHERE time > '{$time_out}'
+        
+        ");
+    $numberUserOnlineCount = mysqli_num_rows($numberUserOnlineQuery);
+    ?>
+      <li>
+          <a>Users Online: <span class="user-online"></span></a>
+      </li>
       <li>
           <a href="../index.php">Home</a>
       </li>
