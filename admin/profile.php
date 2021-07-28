@@ -14,22 +14,40 @@
     $user_password = $_POST['user_password'];
     $username = $_POST['username'];
 
-
-    $editUser = mysqli_query($connection, "
+    if(!empty($user_password)) {
+      $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
+      $editUser = mysqli_query($connection, "
         UPDATE users SET 
         user_name = '$username' , user_password = '$user_password', user_firstname = '$user_firstname', user_lastname = '$user_lastname', user_email = '$user_email', user_role = '$user_role'
         WHERE user_id = $userToEdit
     ");
-    $_SESSION['login_user_name'] = $username;
-    $_SESSION['login_user_firstname'] = $user_firstname;
-    $_SESSION['login_user_lastname'] = $user_lastname;
-    $_SESSION['login_user_role'] = $user_role;
-    $_SESSION['login_user_email'] = $user_email;
-    $_SESSION['login_user_password'] = $user_password;
-    if(!$editUser) {
-      die('Insert Failed' . mysqli_error($connection));
+      $_SESSION['login_user_name'] = $username;
+      $_SESSION['login_user_firstname'] = $user_firstname;
+      $_SESSION['login_user_lastname'] = $user_lastname;
+      $_SESSION['login_user_role'] = $user_role;
+      $_SESSION['login_user_email'] = $user_email;
+      $_SESSION['login_user_password'] = $user_password;
+      if(!$editUser) {
+        die('Insert Failed' . mysqli_error($connection));
+      }
+      header("Location:users.php");
+    } else {
+      $editUser = mysqli_query($connection, "
+        UPDATE users SET 
+        user_name = '$username', user_firstname = '$user_firstname', user_lastname = '$user_lastname', user_email = '$user_email', user_role = '$user_role'
+        WHERE user_id = $userToEdit
+    ");
+      $_SESSION['login_user_name'] = $username;
+      $_SESSION['login_user_firstname'] = $user_firstname;
+      $_SESSION['login_user_lastname'] = $user_lastname;
+      $_SESSION['login_user_role'] = $user_role;
+      $_SESSION['login_user_email'] = $user_email;
+      if(!$editUser) {
+        die('Insert Failed' . mysqli_error($connection));
+      }
+      header("Location:users.php");
     }
-    header("Location:users.php");
+
   }
 
   ?>
@@ -82,7 +100,7 @@
                 </div>
                 <div class="form-group">
                     <label for="post_content">Password</label>
-                    <input type="password" class="form-control" name="user_password" value="<?php echo $_SESSION['login_user_password'] ?>">
+                    <input type="password" class="form-control" name="user_password">
                 </div>
                 <div class="form-group">
                     <input type="submit" name="update_user" class="btn btn-primary" value="Update user profile">

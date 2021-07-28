@@ -20,7 +20,7 @@
 ?>
 
 <?php
-const randSalt = '$2y$10$iusesomecrazystrings22';
+//const randSalt = '$2y$10$iusesomecrazystrings22';
 if(isset($_POST['edit_user'])) {
 
   $user_firstname = $_POST['user_firstname'];
@@ -30,17 +30,31 @@ if(isset($_POST['edit_user'])) {
   $user_password = $_POST['user_password'];
   $username = $_POST['username'];
 
-  $user_password = crypt($user_password, randSalt);
+  if(!empty($user_password)) {
+    $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
 
-  $editUser = mysqli_query($connection, "
+    $editUser = mysqli_query($connection, "
         UPDATE users SET 
         user_name = '$username' , user_password = '$user_password', user_firstname = '$user_firstname', user_lastname = '$user_lastname', user_email = '$user_email', user_role = '$user_role'
         WHERE user_id = $userToEdit
     ");
-  if(!$editUser) {
-    die('Insert Failed' . mysqli_error($connection));
+    if(!$editUser) {
+      die('Insert Failed' . mysqli_error($connection));
+    }
+    header("Location:users.php");
+  } else {
+    $editUser = mysqli_query($connection, "
+        UPDATE users SET 
+        user_name = '$username' , user_firstname = '$user_firstname', user_lastname = '$user_lastname', user_email = '$user_email', user_role = '$user_role'
+        WHERE user_id = $userToEdit
+    ");
+    if(!$editUser) {
+      die('Insert Failed' . mysqli_error($connection));
+    }
+    header("Location:users.php");
   }
-  header("Location:users.php");
+
+
 }
 
 ?>
@@ -85,7 +99,7 @@ if(isset($_POST['edit_user'])) {
     </div>
     <div class="form-group">
         <label for="post_content">Password</label>
-        <input type="password" class="form-control" name="user_password" value="<?php echo $user_password?>">
+        <input type="password" class="form-control" name="user_password">
     </div>
     <div class="form-group">
         <input type="submit" name="edit_user" class="btn btn-primary" value="Edit user">

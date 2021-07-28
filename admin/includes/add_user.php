@@ -16,6 +16,7 @@ if(isset($_POST['create_user'])) {
 
 //  move_uploaded_file($_FILES['image']['tmp_name'], "../images/$postImage");
 
+  $user_password = password_hash($user_password, PASSWORD_BCRYPT, array('cost' => 12));
   $createUser = mysqli_query($connection, "
         INSERT INTO users (user_name, user_password, user_firstname, user_lastname, user_email, user_role)
         VALUES ('$username', '$user_password', '$user_firstname', '$user_lastname', '$user_email', '$user_role')

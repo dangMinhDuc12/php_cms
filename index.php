@@ -88,6 +88,13 @@ session_start();
                         echo "<li>
                                     <a href='./admin'>Admin</a>
                             </li>";
+                    } else if(isset($_SESSION['login_user_id']) && $_SESSION['login_user_role'] === 'subscriber') {
+                      echo "<li>
+                                    <a href='./admin/includes/logout.php'>Logout</a>
+                            </li>
+                         <li>
+                                    <a href=''>Hello {$_SESSION['login_user_name']}</a>
+                            </li>";
                     } else {
                       echo "<li>
                                     <a href='./registration.php'>Register</a>

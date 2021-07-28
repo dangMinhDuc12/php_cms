@@ -6,12 +6,12 @@ if(isset($_POST['submit'])) {
     $email = $_POST['email'];
 
     if(!empty($username) && !empty($password) && !empty($email)) {
-      define("randSalt", '$2y$10$iusesomecrazystrings22');
+//      define("randSalt", '$2y$10$iusesomecrazystrings22');
       $username = mysqli_real_escape_string($connection, $username);
       $password = mysqli_real_escape_string($connection, $password);
       $email = mysqli_real_escape_string($connection, $email);
 
-      $password = crypt($password, randSalt);
+      $password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
       $create_user_account = mysqli_query($connection, "
     INSERT INTO users (user_name, user_email, user_password, user_role)
     VALUES ('$username', '$email', '$password', 'subscriber')
