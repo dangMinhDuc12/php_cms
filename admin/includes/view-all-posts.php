@@ -132,6 +132,10 @@ if(isset($_POST['checkBoxArray'])) {
     while ($row = mysqli_fetch_assoc($categories)) {
         $catTitle = $row['title'];
     }
+    $countCommentsQuery = mysqli_query($connection, "
+        SELECT * FROM comments WHERE comment_post_id = $postId
+    ");
+    $countComments = mysqli_num_rows($countCommentsQuery);
     echo "
                         <tr>
                             <td><input type='checkbox' class='checkBoxChild' name='checkBoxArray[]' value='$postId'></td>
@@ -144,7 +148,7 @@ if(isset($_POST['checkBoxArray'])) {
                                 <img src='{$postImageShow}' alt='image' width='100'>
                             </td>
                             <td>{$postTag}</td>
-                            <td>{$postCommentCount}</td>
+                            <td>{$countComments}</td>
                             <td><a href='posts.php?reset=$postId'>{$postViewCount}</a></td>
                             <td>{$postDate}</td>
                             <td><a style='margin-right: 10px' href='posts.php?delete={$postId}' class='delete-post' onclick=\"return confirm('Are you sure want to delete')\">Delete</a><a style='margin-right: 10px' href='posts.php?source=edit_post&p_id={$postId}'>Edit</a><a href='../post.php?p_id={$postId}'>Go to post</a></td>

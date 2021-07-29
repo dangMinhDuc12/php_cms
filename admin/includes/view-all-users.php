@@ -43,11 +43,13 @@
   ?>
   <?php
   if(isset($_GET['delete'])) {
-    $user_id_delete = $_GET['delete'];
-    if(!mysqli_query($connection, "DELETE FROM users WHERE user_id = $user_id_delete")) {
-      die('Delete comment failed' . mysqli_error($connection));
-    }
-    header('Location:users.php');
+      if(isset($_SESSION['login_user_role']) && $_SESSION['login_user_role'] === 'admin') {
+        $user_id_delete = $_GET['delete'];
+        if(!mysqli_query($connection, "DELETE FROM users WHERE user_id = $user_id_delete")) {
+          die('Delete comment failed' . mysqli_error($connection));
+        }
+        header('Location:users.php');
+      }
   }
 
   if(isset($_GET['change_admin'])) {
